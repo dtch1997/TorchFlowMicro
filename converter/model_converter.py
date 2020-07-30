@@ -7,6 +7,7 @@ import tensorflow as tf
 
 from utils import make_parentdir_if_not_exist
 from converter.convert_graph_to_saved_model import convert_graph_to_saved_model
+from converter.data_preprocess import load_batch
 
 class ModelConverter:
     """
@@ -16,10 +17,15 @@ class ModelConverter:
         TF SavedModel at self.tf_model_dir
         TFLite model at self.tf_lite_path
         TFMicro model at self.tf_micro_path
+        
+        Representative dataset for conversion at self.dataset_path
     """
-    def __init__(self, name: str, model_dir = "saved_models"):
+    
+    
+    def __init__(self, name: str, model_dir = "saved_models", data_dir="crowdhuman_100"):
         self.name = name
         self.model_dir = model_dir
+        self.data_dir = data_dir
         self.logger = logging.getLogger(self.name)
         
     def onnx_to_tf_graph(self):
@@ -42,6 +48,10 @@ class ModelConverter:
         self.logger.info(f"Converting TF SavedModel at {self.tf_model_dir} to TFLite model at {self.tf_lite_path}")
         converter = tf.lite.TFLiteConverter.from_saved_model(self.tf_model_dir)
         converter.optimizations = [tf.lite.Optimize.DEFAULT]
+        batch = load_batch(self.data_path, 96, 96, 'preprocess_method1', size_limit=100)
+        def representative_dataset_gen():   
+            for i in range(batch.shape[0]): 
+                yield batch[i:i+1]
         quantized_model = converter.convert()
         make_parentdir_if_not_exist(self.tf_lite_path)
         open(self.tf_lite_path, "wb").write(quantized_model)
@@ -69,6 +79,10 @@ class ModelConverter:
     @property
     def tf_lite_path(self) -> str:
         return f"{self.model_dir}/tf_lite/{self.name}.tflite"
+    
+    @property
+    def data_path(self) -> str:
+        return f"data_samples/{self.data_file}"
 
 
     @property

@@ -5,7 +5,8 @@ from converter import ModelConverter
 
 parser = argparse.ArgumentParser(description="Convert an ONNX model to TF Lite Micro")
 parser.add_argument("model_name", type=str, help="Unique name for model. See converter.model_converter for usage")
-parser.add_argument("--model_dir", default="saved_models", help="Directory in which saved models are stored. See converter.model_converter for usage")
+parser.add_argument("--model-dir", default="saved_models", help="Directory in which saved models are stored. See converter.model_converter for usage")
+parser.add_argument("--data-dir", default="crowdhuman_100", help="Directory containing images which form representative dataset")
 parser.add_argument("--verbose", action='store_true', help="Run the converter with verbose logging")
 parser.add_argument("--onnx-to-tf-graph", action='store_true')
 parser.add_argument("--tf-graph-to-tf-model", action='store_true')
@@ -22,7 +23,7 @@ def main():
     logging_level = logging.INFO if args.verbose else logging.WARNING        
     logging.basicConfig(filename='example.log',level=logging_level)
         
-    converter = ModelConverter(args.model_name, args.model_dir)
+    converter = ModelConverter(args.model_name, args.model_dir, args.data_file)
     
     if run_all_steps or args.onnx_to_tf_graph:
         converter.onnx_to_tf_graph()
