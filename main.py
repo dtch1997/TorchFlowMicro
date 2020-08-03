@@ -15,6 +15,7 @@ parser.add_argument("--tf-lite-to-tf-micro", action='store_true')
 
 def main():
     args = parser.parse_args()
+    # If no step-specific flags provided, default behaviour is to run all the steps
     run_all_steps = not (args.onnx_to_tf_graph or \
                          args.tf_graph_to_tf_model or \
                          args.tf_model_to_tf_lite or \
@@ -23,7 +24,7 @@ def main():
     logging_level = logging.INFO if args.verbose else logging.WARNING        
     logging.basicConfig(filename='example.log',level=logging_level)
         
-    converter = ModelConverter(args.model_name, args.model_dir, args.data_file)
+    converter = ModelConverter(args.model_name, args.model_dir, args.data_dir)
     
     if run_all_steps or args.onnx_to_tf_graph:
         converter.onnx_to_tf_graph()
