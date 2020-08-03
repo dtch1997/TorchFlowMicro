@@ -17,4 +17,4 @@ input_names = ['model_input']
 output_names = ['model_output']
 
 dummy_input = torch.randn(1, INPUT_SHAPE)
-torch.onnx.export(model, dummy_input, "debug_models/onnx/dummy.onnx", verbose=True, opset_version=11, input_names = input_names, output_names = output_names)
+torch.onnx.export(model, dummy_input, "debug_models/onnx/debug_conv.onnx", verbose=True, opset_version=11, input_names = input_names, output_names = output_names)
