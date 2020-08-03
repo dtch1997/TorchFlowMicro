@@ -4,7 +4,7 @@ import logging
 from converter import ModelConverter
 
 parser = argparse.ArgumentParser(description="Convert an ONNX model to TF Lite Micro")
-parser.add_argument("model_name", type=str, help="Unique name for model. See converter.model_converter for usage")
+parser.add_argument("model-name", type=str, help="Unique name for model. See converter.model_converter for usage")
 parser.add_argument("--model-dir", default="saved_models", help="Directory in which saved models are stored. See converter.model_converter for usage")
 parser.add_argument("--data-dir", default="crowdhuman_100", help="Directory containing images which form representative dataset")
 parser.add_argument("--verbose", action='store_true', help="Run the converter with verbose logging")
