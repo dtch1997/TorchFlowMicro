@@ -82,7 +82,7 @@ class ModelConverter:
     
     @property
     def data_path(self) -> str:
-        return f"data_samples/{self.data_file}"
+        return f"data_samples/{self.data_dir}"
 
 
     @property
